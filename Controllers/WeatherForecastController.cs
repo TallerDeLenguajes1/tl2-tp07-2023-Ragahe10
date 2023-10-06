@@ -1,32 +1,21 @@
+using EspacioTarea;
 using Microsoft.AspNetCore.Mvc;
 
 namespace tl2_tp07_2023_Ragahe10.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class WeatherForecastController : ControllerBase
+public class TareasController : ControllerBase
 {
-    private static readonly string[] Summaries = new[]
-    {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+    private readonly ILogger<TareasController> _logger;
+    private ManejoDeTareas manejoDeTareas;
 
-    private readonly ILogger<WeatherForecastController> _logger;
-
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    public TareasController(ILogger<TareasController> logger)
     {
         _logger = logger;
+        AccesoADatos accesoADatos = new AccesoADatos();
+        manejoDeTareas = new ManejoDeTareas(accesoADatos);
     }
-
-    [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<WeatherForecast> Get()
-    {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        {
-            Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        })
-        .ToArray();
-    }
+    
+    
 }
